@@ -1,73 +1,45 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        resume-creator
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+  <main>
+    <nav class="navigation">
+      <NuxtLink class="navigation__link" to="/">Home</NuxtLink>
+      <NuxtLink class="navigation__link" to="/editor">Editor</NuxtLink>
+    </nav>
+
+    <div class="container">
+      <h1>This is the <br> Home Page.</h1>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
 export default {}
 </script>
 
-<style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
+<style lang="sass" scoped>
 
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
+main 
+  height: 100vh
 
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
+.navigation
+  width: 100%
+  display: flex
+  justify-content: center
 
-.links {
-  padding-top: 15px;
-}
+  padding-top: 20px
+
+  &__link 
+    margin: 0 20px
+
+.container
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 100%
+
+  margin-top: 200px
+
+  h1
+    font-weight: 800
+    font-size: 70px
+
 </style>

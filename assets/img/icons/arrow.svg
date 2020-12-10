@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21.472" height="8.818" viewBox="0 0 21.472 8.818">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #262626;
+        stroke-linecap: round;
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>
+  <g id="Arrow_Back_Icon" data-name="Arrow Back Icon" transform="translate(-32.528 -28.511)">
+    <line id="Line_1" data-name="Line 1" class="cls-1" x2="18.877" transform="translate(34.123 35.891)"/>
+    <line id="Line_2" data-name="Line 2" class="cls-1" x2="8.471" transform="translate(33.943 35.914) rotate(-45)"/>
+  </g>
+</svg>

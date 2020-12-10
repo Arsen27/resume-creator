@@ -10,8 +10,17 @@
   },
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.2",
+    "@tinymce/tinymce-vue": "^3.2.6",
     "core-js": "^3.6.5",
-    "nuxt": "^2.14.6"
+    "nuxt": "^2.14.6",
+    "v-calendar": "^2.1.1",
+    "vue-click-outside": "^1.1.0",
+    "vue2-editor": "^2.10.2",
+    "vuedraggable": "^2.24.3"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "fibers": "^5.0.0",
+    "sass": "^1.30.0",
+    "sass-loader": "^10.1.0"
+  }
 }
