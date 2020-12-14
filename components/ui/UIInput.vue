@@ -11,9 +11,10 @@
     <input 
       class="input__field"
       type="text"
-      v-model="value"
+      :value="value"
       ref="field"
       @blur.prevent="setBlur()"
+      @input="updateValue($event.target.value)"
     >
   </div>
 </template>
@@ -32,9 +33,14 @@ export default {
       required: false,
       default: '',
     },
+    value: {
+      type: String,
+      required: false,
+      default: '',
+    },
   },
   data: () => ({
-    value: '',
+    valueModel: '',
     focused: false,  
   }),
   methods: {
@@ -47,13 +53,23 @@ export default {
       this.focused = true
     },
     setBlur() {
-      if (!this.value.length) {
+      if (!this.valueModel.length) {
         const { field } = this.$refs
 
         field.blur()
         this.focused = false
       } 
     },
+    updateValue(value) {
+      this.valueModel = value
+      this.$emit('input', value)
+    },
+  },
+  mounted() {
+    if (this.$props.value) {
+      this.setFocus()
+      this.valueModel = this.$props.value
+    }
   },
 }
 

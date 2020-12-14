@@ -11,12 +11,17 @@ export default {
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
-  css: ["~assets/css/fonts.sass"],
+  css: [
+    "@fortawesome/fontawesome-svg-core/styles.css",
+    "~assets/css/fonts.sass"
+  ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     { src: "~plugins/v-calendar.js", ssr: false },
-    { src: "~plugins/filters.js" }
+    { src: '~plugins/vue-editor.js', mode: 'client' },
+    "~plugins/filters.js",
+    "~/plugins/fontawesome.js"
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)

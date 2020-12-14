@@ -21,7 +21,7 @@
   --color-bg-light: #E8E8E8
   --color-accent-red: #FF4848
   // --color-accent-blue: #5B8ADB
-  --color-accent-blue: #3b62ff
+  --color-accent-blue: #5574f2
 
 // Scroll
 
@@ -51,6 +51,9 @@ input
 textarea 
   outline: none
   font-family: var(--font-main)
+
+button 
+  outline: none
 
 </style>
 

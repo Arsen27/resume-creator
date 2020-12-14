@@ -1,14 +1,27 @@
 <template>
   <div class="item" :class="{ 'item_opened': opened }">
     <div class="item__header" @click="contentToggle()">
-      <div>
-        <h4 class="item__title">{{ title }}</h4>
-        <span class="item__description">{{ description }}</span>
-      </div>
+      <icons-drag class="item__drag-icon" />  
 
       <div>
-        <IconsChevron :direction="opened ? 'up' : 'down'" />
+        <ui-editable-text 
+          class="item__title" 
+          :placeholder="title" 
+        />
+        
+        <span 
+          v-if="description" 
+          class="item__description"
+        >
+          {{ description }}
+        </span>
       </div>
+
+      <icons-chevron :direction="opened ? 'up' : 'down'" />
+
+      <div class="item__delete-icon-wrapper" @click.stop="$emit('delete')">
+        <icons-delete class="item__delete-icon" />
+      </div>  
     </div>
 
     <div 
@@ -25,16 +38,21 @@
 
 import IconsChevron from '@/components/icons/IconsChevron'
 import IconsDrag from '@/components/icons/IconsDrag'
+import UIEditableText from '@/components/ui/UIEditableText'
 
 export default {
   components: {
-    IconsChevron, IconsDrag,
+    IconsChevron, IconsDrag, UIEditableText,
   },
   data: () => ({
     opened: false,
     contentMaxHeight: null,
   }),
   props: {
+    id: {
+      type: Number,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
@@ -66,6 +84,7 @@ export default {
 
 .item
   cursor: pointer
+  position: relative
 
   &_opened
     .item__content 
@@ -84,7 +103,29 @@ export default {
       border-bottom: none
       border-radius: 6px 6px 0 0
 
+  &__drag-icon   
+    position: absolute
+    left: -20px
+
+    opacity: 0
+
+    transition: .3s
   
+  &__delete-icon
+    height: 18px
+    width: auto
+
+    fill: var(--color-accent-red)    
+    opacity: 0
+
+    transition: .3s
+
+    &-wrapper
+      position: absolute
+      right: -27px
+      top: 50%
+      transform: translateY(-50%)
+
   &__header 
     display: flex
     align-items: center
@@ -95,13 +136,22 @@ export default {
     border-radius: 6px
 
     padding: 20px 24px
+    
+    &:hover
+      .item__drag-icon
+        opacity: 1
+        transition: .3s
+
+      .item__delete-icon
+        opacity: 1
+        transition: .3s
 
   &:hover
     .item__content
       padding-top: 5px
       transition: .2s
 
-    .item__drag-.item__description 
+    .item__drag
       opacity: 1
 
   &_opened
@@ -112,11 +162,14 @@ export default {
   &__title
     font-size: 20px
     font-weight: 700
-    margin-bottom: 10px
-
 
   &__description
+    display: inline-block
+    
+    margin-top: 10px
+    
     font-size: 14px
+    
     color: var(--color-text-light)
 
   &__content

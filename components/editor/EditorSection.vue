@@ -1,10 +1,14 @@
+// # TODO
+// # 1. Title editor 
+// # 2. Section delete
+
 <template>
   <section 
     class="section"
     :class="{'section_opened': opened}"
   >
     <div class="section__side">
-      <IconsDrag class="section__drag-icon" />  
+      <icons-drag class="section__drag-icon" />  
       
       <div class="section__num">
         {{ number }}
@@ -55,7 +59,7 @@ export default {
       type: String,
       required: false,
       default: '',
-    }
+    },
   },
   data: () => ({
     opened: false,
@@ -76,17 +80,24 @@ export default {
 .section 
   display: grid
   grid-template-columns: 26px 1fr
-  grid-gap: 0 20px
+  grid-gap: 0 0
+
+  padding: 0 10px 0 30px
 
   &:last-of-type
     .section__line 
       height: 0
+      
+    .section__content 
+      padding-bottom: 0
+
 
   &_opened 
     .section__content
       height: auto
       max-height: 1000px
 
+      padding: 0 30px 56px 20px !important
       transform: translateY(0) rotate(0)
       
       opacity: 1
@@ -102,17 +113,20 @@ export default {
       .section__line 
         height: calc(100% - 26px)
     
-
   &__header
     display: flex
     align-items: center
 
-    cursor: pointer
+    padding: 0 20px
 
+    cursor: pointer
 
   &__description
     display: block
+
     font-size: 14px
+    line-height: 24px
+
     margin-top: 15px
 
   &__margin
@@ -124,7 +138,7 @@ export default {
     overflow: hidden
  
     padding-bottom: 56px
-    transform: translateY(-50px) rotate(-5deg)
+    transform: translateY(50px) rotate(5deg)
     
     opacity: 0
 

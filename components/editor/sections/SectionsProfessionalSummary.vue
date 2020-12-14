@@ -1,29 +1,39 @@
 <template>
-  <text-editor
-    api-key="c44wfkztglidvuzsoqrzh726oq9bydc7gw1ara9n284nad0a"
-    :init="{
-      height: 300,
-      menubar: false,
-      statusbar: false,
-      plugins: [
-        'advlist autolink lists link image charmap print preview anchor',
-        'searchreplace visualblocks code fullscreen',
-        'insertdatetime media table paste code help wordcount'
-      ],
-      toolbar:
-        'undo redo | formatselect | bold italic backcolor | \
-         alignleft aligncenter alignright alignjustify | \
-         bullist numlist outdent indent | removeformat | help'
-    }"
+  <ui-text-editor
+    :value="fields.content"
+    @input="fieldUpdate('content', $event)" 
   />
 </template>
 
 <script>
 
-import Editor from '@tinymce/tinymce-vue'
+import UITextEditor from '@/components/ui/UITextEditor'
 
 export default {
-  components: { 'text-editor': Editor },
+  components: { UITextEditor, },
+  data: () => ({
+    fields: {
+      content: '',
+    },
+  }),
+  methods: {
+    fieldUpdate(key, value) {
+      this.fields = { 
+        ...this.fields, 
+        [key]: value 
+      }
+
+      this.$emit('dataChange', this.fields)
+    },
+  },
+  mounted() {
+    this.$emit('dataChange', this.places)
+  },
 }
 
 </script>
+
+<style lang="sass">
+
+</style>
+

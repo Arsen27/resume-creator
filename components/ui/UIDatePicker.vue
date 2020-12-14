@@ -11,19 +11,20 @@
 
     <span class="input__field">{{ formatedDate }}</span>
 
-    <no-ssr>
+    <client-only>
       <div 
         class="input__calendar"
         v-show="dateField" 
       >
         <v-date-picker
           mode="range"
-          v-model="selectedDate"
+          :value="value"
           :min-date="new Date()"
           show-caps
+          @input="updateValue($event)"
         />
       </div>
-    </no-ssr>
+    </client-only>
   </div>
 </template>
 
@@ -32,17 +33,19 @@
 import ClickOutside from 'vue-click-outside'
 
 export default {
-  components: {
-  },
   props: {
     label: {
       type: String,
       required: false,
       default: '',
     },
+    value: {
+      type: Date,
+      required: false,
+      default: new Date(),
+    },
   },
   data: () => ({
-    value: '',
     focused: false,
     dateField: false,
     selectedDate: null,
@@ -62,6 +65,9 @@ export default {
     hideField() {
       this.dateField = false
       this.setBlur()
+    },
+    updateValue(value) {
+      this.$emit('input', value)
     },
   },
   computed: {
