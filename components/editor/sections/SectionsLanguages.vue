@@ -1,26 +1,26 @@
 <template>
-  <div class="links">
-    <draggable v-model="links">
+  <div class="langs">
+    <draggable v-model="languages">
       <editor-card
-        class="links__link"
-        v-for="(link, i) in linksMulti" :key="i"
+        class="langs__lang"
+        v-for="(lang, i) in languagesMulti" :key="i"
         
-        :title="link.label"
+        :title="lang.name"
         
-        @delete="removeItem(['links', link.id])"
+        @delete="removeItem(['languages', lang.id])"
       >
         <div class="form">
           <div class="form__row">
-            <ui-input label="Label" v-model="link.label" />
-            <ui-input label="Link" v-model="link.link" />
+            <ui-input label="Language" v-model="lang.name" />
+            <ui-level-select label="Level" v-model="lang.level" />
           </div>
         </div>
       </editor-card>    
     </draggable>
 
     <ui-button 
-      class="links__add-new-button"
-      @click="addItem(['links'])"
+      class="langs__add-new-button"
+      @click="addItem(['languages'])"
     >
       + ADD NEW
     </ui-button>
@@ -30,6 +30,7 @@
 <script>
 
 import UIButton from '@/components/ui/UIButton'
+import UILevelSelect from '@/components/ui/UILevelSelect'
 
 import draggable from 'vuedraggable'
 
@@ -38,10 +39,10 @@ import { mapMultiRowFields, mapFields } from 'vuex-map-fields'
 
 
 export default {
-  components: { UIButton, draggable },
+  components: { UIButton, UILevelSelect, draggable },
   computed: {
-    ...mapMultiRowFields('resume', { linksMulti: 'links' }),
-    ...mapFields('resume', ['links']),
+    ...mapMultiRowFields('resume', { languagesMulti: 'languages' }),
+    ...mapFields('resume', ['languages']),
   },
   methods: {
     ...mapMutations('resume', [
@@ -53,7 +54,7 @@ export default {
     ]), 
   },
   created() {
-    this.initItems('links')
+    this.initItems('languages')
   },
 }
 
@@ -61,9 +62,9 @@ export default {
 
 <style lang="sass" scoped>
 
-.links
+.langs
 
-  &__link
+  &__lang 
     margin-bottom: 20px
 
     &:last-of-type
@@ -87,15 +88,9 @@ export default {
     &:nth-of-type(2)
       grid-template-columns: 1fr 1fr
 
-  &__period
-    display: grid
-    grid-template-columns: 1fr 1fr
-    grid-gap: 0 10px
-    
   &__label
     font-weight: 600
     font-size: 16px
     margin-bottom: 15px
-
 
 </style>

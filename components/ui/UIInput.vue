@@ -45,10 +45,8 @@ export default {
   }),
   methods: {
     setFocus() {
-      if (this.$props.type === 'text') {
-        const { field } = this.$refs
-        field.focus()
-      }
+      const { field } = this.$refs
+      field.focus()
 
       this.focused = true
     },
@@ -65,10 +63,10 @@ export default {
       this.$emit('input', value)
     },
   },
-  mounted() {
+  updated() {
     if (this.$props.value) {
       this.setFocus()
-      this.valueModel = this.$props.value
+      this.valueModel = this.value
     }
   },
 }

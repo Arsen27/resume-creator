@@ -1,25 +1,28 @@
 <template>
   <div class="field">
-    <span 
-      class="field__text"
-      v-show="!focused"
-    >
-      {{ value }}
-    </span>
-    
-    <input
-      v-model="value" 
-      ref="input"
-      class="field__input" 
-      type="text"
-      @blur="setBlur"
-    >
+    <div>
+      <span 
+        class="field__text"
+        :style="{ visibility: focused ? 'hidden' : 'visible' }"
+      >
+        {{ value ? value : '(Not specified)' }}
+      </span>
+      
+      <input
+        :value="value"
+        ref="input"
+        class="field__input" 
+        type="text"
+        @blur="setBlur"
+        @input="$emit('input', $event.target.value)"
+      >
+    </div>
 
     <div
       @click.stop="setFocus"
       v-show="!focused" 
     >
-      <IconsPen class="field__pen-icon" />
+      <IconsPen v-if="showPen" class="field__pen-icon" />
     </div>
   </div>
 </template>
@@ -30,15 +33,30 @@ import IconsPen from '@/components/icons/IconsPen'
 
 export default {
   components: { IconsPen, },
-  data: () => ({
-    value: null,
-    focused: false,
-  }),
   props: {
-    placeholder: {
+    value: {
       type: String,
       required: true,
     },
+    showPen: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    focused: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+  watch: {
+    focused(value) {
+      if (value) {
+        this.setFocus()
+      } else {
+        this.setBlur()
+      }
+    } 
   },
   methods: {
     setFocus() {
@@ -51,9 +69,6 @@ export default {
       this.focused = false
     },
   },
-  mounted() {
-    this.value = this.$props.placeholder
-  }
 }
 
 </script>
@@ -65,6 +80,8 @@ export default {
   display: flex
   align-items: center
 
+  max-width: 100%
+
   &:hover 
     .field__pen-icon
       opacity: 1
@@ -72,6 +89,10 @@ export default {
 
   &__input 
     display: none
+    width: 100%
+
+    position: absolute
+    top: 0
 
     font-size: inherit
     font-weight: inherit

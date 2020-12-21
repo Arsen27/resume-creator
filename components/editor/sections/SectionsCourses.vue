@@ -1,26 +1,34 @@
 <template>
-  <div class="links">
-    <draggable v-model="links">
+  <div class="courses">
+    <draggable v-model="courses">
       <editor-card
-        class="links__link"
-        v-for="(link, i) in linksMulti" :key="i"
+        class="courses__course"
+        v-for="(course, i) in coursesMulti" :key="i"
         
-        :title="link.label"
+        :title="course.name"
+        :description="formatedDate(course.date)"
         
-        @delete="removeItem(['links', link.id])"
+        @delete="removeItem(['courses', course.id])"
       >
         <div class="form">
           <div class="form__row">
-            <ui-input label="Label" v-model="link.label" />
-            <ui-input label="Link" v-model="link.link" />
+            <ui-input label="Course" v-model="course.name" />
+            <ui-input label="Institution" v-model="course.institution" />
+          </div>
+
+          <div class="form__row">
+            <div class="form__period">
+              <ui-date-picker label="Start date" v-model="course.date.from" />
+              <ui-date-picker label="End date" v-model="course.date.to" />
+            </div>
           </div>
         </div>
       </editor-card>    
     </draggable>
 
     <ui-button 
-      class="links__add-new-button"
-      @click="addItem(['links'])"
+      class="courses__add-new-button"
+      @click="addItem(['courses'])"
     >
       + ADD NEW
     </ui-button>
@@ -40,8 +48,8 @@ import { mapMultiRowFields, mapFields } from 'vuex-map-fields'
 export default {
   components: { UIButton, draggable },
   computed: {
-    ...mapMultiRowFields('resume', { linksMulti: 'links' }),
-    ...mapFields('resume', ['links']),
+    ...mapMultiRowFields('resume', { coursesMulti: 'courses' }),
+    ...mapFields('resume', ['courses']),
   },
   methods: {
     ...mapMutations('resume', [
@@ -51,9 +59,20 @@ export default {
     ...mapActions('resume', [
       'initItems',
     ]), 
+
+    dateFormat(date) {
+      const { monthNameShort } = this.$options.filters
+      
+      return `${monthNameShort(date.getMonth())} ${date.getFullYear()}`
+    },
+    formatedDate({ from, to }) {
+      const { dateFormat } = this
+      
+      return dateFormat(from) + ' - ' + dateFormat(to)
+    },    
   },
   created() {
-    this.initItems('links')
+    this.initItems('courses')
   },
 }
 
@@ -61,9 +80,9 @@ export default {
 
 <style lang="sass" scoped>
 
-.links
+.courses
 
-  &__link
+  &__course 
     margin-bottom: 20px
 
     &:last-of-type
@@ -96,6 +115,5 @@ export default {
     font-weight: 600
     font-size: 16px
     margin-bottom: 15px
-
 
 </style>

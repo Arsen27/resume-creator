@@ -10,13 +10,15 @@
       <editor-statusbar class="form__statusbar" />
     </div>
 
-    <draggable :list="sections">
+    <draggable v-model="sections">
       <editor-section
         v-for="(section, i) in sections" :key="i"
 
         :number="i + 1"
         :title="section.title"
         :description="section.description"
+
+        @delete="removeSection(section.id)"
       >
         <component
           :is="section.component"
@@ -33,6 +35,8 @@
         <div
           class="additional__item"
           v-for="(item, i) in additionalSections" :key="i"
+
+          @click="addSection(item)"
         >
           <font-awesome-icon class="additional__icon" :icon="item.icon" />
 
@@ -52,10 +56,21 @@ import EditorSection from '@/components/editor/EditorSection'
 import SectionsPersonalDetails from '@/components/editor/sections/SectionsPersonalDetails'
 import SectionsProfessionalSummary from '@/components/editor/sections/SectionsProfessionalSummary'
 import SectionsSkills from '@/components/editor/sections/SectionsSkills'
-import SectionsPlaces from '@/components/editor/sections/SectionsPlaces'
+import SectionsEmploymentHistory from '@/components/editor/sections/SectionsEmploymentHistory'
+import SectionsEducation from '@/components/editor/sections/SectionsEducation'
 import SectionsLinks from '@/components/editor/sections/SectionsLinks'
+import SectionsCustom from '@/components/editor/sections/SectionsCustom'
+import SectionsActivities from '@/components/editor/sections/SectionsActivities'
+import SectionsHobbies from '@/components/editor/sections/SectionsHobbies'
+import SectionsReferences from '@/components/editor/sections/SectionsReferences'
+import SectionsCourses from '@/components/editor/sections/SectionsCourses'
+import SectionsInternships from '@/components/editor/sections/SectionsInternships'
+import SectionsLanguages from '@/components/editor/sections/SectionsLanguages'
 
 import draggable from 'vuedraggable'
+
+import { mapMutations } from 'vuex'
+import { mapFields } from 'vuex-map-fields'
 
 
 export default {
@@ -67,76 +82,86 @@ export default {
     SectionsPersonalDetails,
     SectionsProfessionalSummary,
     SectionsSkills,
-    SectionsPlaces,
+    SectionsEmploymentHistory,
+    SectionsEducation,
     SectionsLinks,
+    SectionsCustom,
+    SectionsActivities,
+    SectionsHobbies,
+    SectionsReferences,
+    SectionsCourses,
+    SectionsInternships,
+    SectionsLanguages,
 
     draggable,
+  },
+  computed: {
+    ...mapFields('editor', [
+      'sections',
+    ]),
   },
   data: () => ({
     dataSnapshot: {
       title: 'Your Resume Title',
     },
-    sections: [
-      { 
-        component: 'sections-personal-details', 
-        itemComponent: '',
-        fixed: false, 
-        title: 'Personal Details',
-        description: '',
-        fieldName: 'personalDetails',
-      },
-      { 
-        component: 'sections-professional-summary', 
-        itemComponent: '',
-        fixed: false, 
-        title: 'Professional Summary',
-        description: 'Include 2-3 clear sentences about your overall experience',  
-        fieldName: 'professionalSummary',
-      },
-      { 
-        component: 'sections-places', 
-        itemComponent: 'cards-employment',
-        fixed: false, 
-        title: 'Employment History',
-        description: 'Include your last 10 years of relevant experience and dates in this section. List your most recent position first.',  
-        fieldName: 'employmentHistory',
-      },
-      { 
-        component: 'sections-places', 
-        itemComponent: 'cards-education',
-        fixed: false, 
-        title: 'Education',
-        description: 'If relevant, include your most recent educational achievements and the dates here',  
-        fieldName: 'education',
-      },
-      { 
-        component: 'sections-links', 
-        itemComponent: '',
-        fixed: false, 
-        title: 'Websites & Social Links',
-        description: 'You can add links to websites you want hiring managers to see! Perhaps It will be  a link to your portfolio, LinkedIn profile, or personal website',  
-        fieldName: 'links',
-      },
-      { 
-        component: 'sections-skills', 
-        itemComponent: '',
-        fixed: false, 
-        title: 'Skills',
-        description: '',  
-        fieldName: 'skills',
-      },
-    ],
     additionalSections: [
-      { icon: 'sliders-h', name: 'Custom Section', used: false, },
-      { icon: 'running', name: 'Extra-curricular Activities', used: false, },
-      { icon: 'chess-knight', name: 'Hobbies', used: false, },
-      { icon: 'list-ul', name: 'References', used: false, },
-      { icon: 'medal', name: 'Courses', used: false, },
-      { icon: 'briefcase', name: 'Internship', used: false, },
-      { icon: 'globe-europe', name: 'Langueges', used: false, },
+      { 
+        icon: 'sliders-h', 
+        name: 'Custom Section', 
+        used: false, 
+        component: 'sections-custom',
+        fieldName: 'sectionsCustom',
+      },
+      { 
+        icon: 'running', 
+        name: 'Extra-curricular Activities', 
+        used: false, 
+        component: 'sections-activities',
+        fieldName: 'sectionsExtra',
+      },
+      { 
+        icon: 'chess-knight', 
+        name: 'Hobbies', 
+        used: false, 
+        component: 'sections-hobbies',
+        fieldName: 'sectionsHobbies',
+      },
+      { 
+        icon: 'list-ul', 
+        name: 'References', 
+        used: false, 
+        component: 'sections-references',
+        fieldName: 'sectionsReferences',
+      },
+      { 
+        icon: 'medal', 
+        name: 'Courses', 
+        used: false, 
+        component: 'sections-courses',
+        fieldName: 'sectionsCourses',
+      },
+      { 
+        icon: 'briefcase', 
+        name: 'Internship', 
+        used: false, 
+        component: 'sections-internships',
+        fieldName: 'sectionsInternships',
+      },
+      { 
+        icon: 'globe-europe', 
+        name: 'Langueges', 
+        used: false, 
+        component: 'sections-languages',
+        fieldName: 'sectionsLanguages',
+      },
     ],
   }),
   methods: {
+    ...mapMutations('editor', [
+      'addSection',
+      'removeSection',
+    ]),
+
     updateData(key, value) {
       this.dataSnapshot = {
         ...this.dataSnapshot,
@@ -169,7 +194,6 @@ export default {
     padding: 0px 30px
 
 
-
 .additional
   &__items
     margin-top: 30px
@@ -191,6 +215,5 @@ export default {
   &__icon
     font-size: 1.3em
     color: var(--color-accent-blue)
-
 
 </style>

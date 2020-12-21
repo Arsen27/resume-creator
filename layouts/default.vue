@@ -55,6 +55,10 @@ textarea
 button 
   outline: none
 
+// .picture-input
+//   background: transparent
+//   border: 1px solid var(--color-accent-blue)
+
 </style>
 
 <style lang="sass" scoped>

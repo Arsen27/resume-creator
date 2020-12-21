@@ -6,7 +6,8 @@
       <div>
         <ui-editable-text 
           class="item__title" 
-          :placeholder="title" 
+          :value="title" 
+          @input="$emit('input', $event)"
         />
         
         <span 
@@ -21,7 +22,7 @@
 
       <div class="item__delete-icon-wrapper" @click.stop="$emit('delete')">
         <icons-delete class="item__delete-icon" />
-      </div>  
+      </div>    
     </div>
 
     <div 
@@ -49,10 +50,6 @@ export default {
     contentMaxHeight: null,
   }),
   props: {
-    id: {
-      type: Number,
-      required: true,
-    },
     title: {
       type: String,
       required: true,
@@ -95,6 +92,7 @@ export default {
 
       background: var(--color-bg-main)
       border: 1px solid var(--color-border-light)
+      border-bottom: 1px solid var(--color-border-light) !important
       border-top: none
 
       overflow: visible
@@ -148,7 +146,7 @@ export default {
 
   &:hover
     .item__content
-      padding-top: 5px
+      border-bottom: 5px solid var(--color-accent-blue)
       transition: .2s
 
     .item__drag
@@ -180,8 +178,9 @@ export default {
 
     border-radius: 0 0 10px 10px
     background: var(--color-accent-blue)
+    border: 0px solid var(--color-accent-blue)
 
-    transition: .2s
+    transition: .1s
     overflow: hidden
 
 </style>

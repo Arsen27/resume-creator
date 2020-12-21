@@ -22,24 +22,29 @@
     </div>
 
     <div class="skills__items">
-      <draggable v-if="skills.length" :list="skills">
-        <cards-skill 
+      <draggable v-model="skills">
+        <editor-card
           class="skills__item"
-          v-for="skill in skills" :key="skill.id"
-
-          :id="skill.id"
-          :name="skill.name"
+          v-for="(skill, i) in skillsMulti" :key="i"
+          
+          :title="skill.name"
           :description="skill.level"
-          :showExperience="showExperience"
+          
+          @delete="removeItem(['skills', skill.id])"
+        >
+          <div class="form">
+            <div class="form__row">
+              <ui-input label="Skill" v-model="skill.name" />
 
-          @delete="deleteItem(skill.id)"
-          @dataChange="updateData(skill.id, $event)"
-        />
+              <ui-level-select v-model="skill.level" />
+            </div>  
+          </div>
+        </editor-card>    
       </draggable>
 
       <ui-button 
         class="skills__add-new-button"
-        @click="addNewItem"
+        @click="addItem(['skills'])"
       >
         + ADD NEW SKILL
       </ui-button>
@@ -51,18 +56,24 @@
 
 import UIToggle from '@/components/ui/UIToggle'
 import UIButton from '@/components/ui/UIButton'
+import UILevelSelect from '@/components/ui/UILevelSelect'
 import EditorSkillTemplate from '@/components/editor/EditorSkillTemplate'
-import CardsSkill from '@/components/editor/cards/CardsSkill.vue'
 
 import draggable from 'vuedraggable'
 
+import { mapActions, mapMutations } from 'vuex'
+import { mapMultiRowFields, mapFields } from 'vuex-map-fields'
+
+
 export default {
-  components: { UIToggle, UIButton, EditorSkillTemplate, CardsSkill, draggable, },
+  components: { 
+    UIToggle, 
+    UIButton, 
+    UILevelSelect,
+    EditorSkillTemplate, 
+    draggable, 
+  },
   data: () => ({
-    showExperience: true,
-    skills: [
-      { id: 0, name: '(Not specified)', level: 'Expert', templateId: null, },
-    ],
     skillTemplates: [
       { id: 0, name: 'Communication Skills', checked: false, },
       { id: 1, name: 'Customer Service', checked: false, },
@@ -74,38 +85,21 @@ export default {
       { id: 7, name: 'Leadership Skills', checked: false, },
     ]
   }),
-  methods: {
-    addNewItem() {
-      this.skills.push({
-        id: this.skills.length,
-        name: '(Not specified)',
-        level: 'Expert',
-        templateId: null,
-      })
-    },
-    deleteItem(id) {
-      this.skills.forEach((item, i) => {
-        if (item.id === id) {
-          this.skills.splice(i, 1)
-
-          return
-        }
-      })
-    },
-    updateData(id, value) {
-      this.skills.forEach(item => {
-        if (item.id === id) {
-          item.value = value
-          
-          return
-        }
-      })
-
-      this.$emit('dataChange', this.skills)
-    },
+  computed: {
+    ...mapMultiRowFields('resume', { skillsMulti: 'skills' }),
+    ...mapFields('resume', ['skills']),
   },
-  mounted() {
-    this.$emit('dataChange', this.skills)
+  methods: {
+    ...mapMutations('resume', [
+      'addItem',
+      'removeItem',
+    ]),
+    ...mapActions('resume', [
+      'initItems',
+    ]),
+  },
+  created() {
+    this.initItems('skills')
   },
 }
 
@@ -144,5 +138,28 @@ export default {
     margin-top: 25px
 
 
+.form
+  display: grid
+  grid-gap: 22px 0px
+
+  &__row
+    display: grid
+    grid-gap: 0px 24px
+
+    &:nth-of-type(1)
+      grid-template-columns: 1fr 1fr
+
+    &:nth-of-type(2)
+      grid-template-columns: 1fr 1fr
+
+  &__period
+    display: grid
+    grid-template-columns: 1fr 1fr
+    grid-gap: 0 10px
+    
+  &__label
+    font-weight: 600
+    font-size: 16px
+    margin-bottom: 15px
 
 </style>

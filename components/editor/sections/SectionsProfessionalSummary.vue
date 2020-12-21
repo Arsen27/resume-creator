@@ -1,21 +1,17 @@
 <template>
-  <ui-text-editor
-    :value="fields.content"
-    @input="fieldUpdate('content', $event)" 
-  />
+  <ui-text-editor v-model="professionalSummary" />
 </template>
 
 <script>
 
 import UITextEditor from '@/components/ui/UITextEditor'
+import { mapFields } from 'vuex-map-fields'
 
 export default {
   components: { UITextEditor, },
-  data: () => ({
-    fields: {
-      content: '',
-    },
-  }),
+  computed: {
+    ...mapFields('resume', ['professionalSummary']),
+  },
   methods: {
     fieldUpdate(key, value) {
       this.fields = { 

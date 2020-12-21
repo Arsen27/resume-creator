@@ -19,8 +19,27 @@
 
     <div class="section__main">
       <div class="section__header" @click="contentToggle()">
-        <h3 class="section__title">{{ title }}</h3>
-        <icons-chevron :direction="opened ? 'up' : 'down'" />
+        <div class="section__header-left">
+          <ui-editable-text
+            class="section__title"
+            :value="title" 
+            :focused="titleFocused"
+            :showPen="false"
+          />
+          <icons-chevron :direction="opened ? 'up' : 'down'" />
+        </div>
+
+        <div class="section__header-right">
+          <div @click.stop="titleFocused = true">
+            <icons-pen 
+              class="section__pen-icon" 
+            />
+          </div>
+
+          <div @click.stop="$emit('delete', id)">
+            <icons-delete class="section__delete-icon" />
+          </div>
+        </div>
       </div>
       
       <div 
@@ -43,9 +62,13 @@
 
 import IconsChevron from '@/components/icons/IconsChevron'
 import IconsDrag from '@/components/icons/IconsDrag'
+import IconsPen from '@/components/icons/IconsPen'
+import IconsDelete from '@/components/icons/IconsDelete'
+
+import UIEditableText from '@/components/ui/UIEditableText'
 
 export default {
-  components: { IconsChevron, IconsDrag },
+  components: { IconsChevron, IconsDrag, IconsPen, IconsDelete, UIEditableText },
   props: {
     number: {
       type: Number,
@@ -65,6 +88,7 @@ export default {
     opened: false,
     contentMaxHeight: null,
     lineHeight: null,
+    titleFocused: false,
   }),
   methods: {
     contentToggle() {
@@ -91,6 +115,15 @@ export default {
     .section__content 
       padding-bottom: 0
 
+  &:hover
+    .section__pen-icon
+      opacity: 1
+      transition: .1s
+    
+    .section__delete-icon
+      opacity: 1
+      transition: .1s
+    
 
   &_opened 
     .section__content
@@ -116,10 +149,19 @@ export default {
   &__header
     display: flex
     align-items: center
+    justify-content: space-between
 
     padding: 0 20px
 
     cursor: pointer
+
+    &-left 
+      display: flex
+      align-items: center
+
+    &-right 
+      display: flex
+      align-items: center
 
   &__description
     display: block
@@ -145,12 +187,31 @@ export default {
     visibility: hidden
     transition: .4s
 
-
   &__title 
     font-size: 22px
     font-weight: 700
 
     margin-right: 10px
+
+  &__delete-icon
+    height: 18px
+    width: auto
+
+    fill: var(--color-accent-red)    
+    opacity: 0
+
+    transition: .1s
+
+  &__pen-icon
+    height: 14px
+    width: auto
+
+    margin-right: 12px
+    transform: rotate(-10deg)
+
+    opacity: 0
+
+    trasnstion: .1s
 
   &__side 
     position: relative

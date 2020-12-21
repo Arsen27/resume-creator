@@ -3,36 +3,48 @@
     <div class="personal-details__row">
       <ui-input 
         label="Wanted job title" 
-        :value="fields.wantedJob" 
-        @input="fieldUpdate('wantedJob', $event)" 
+        v-model="wantedJob"
       />
+
+      <!-- <picture-input 
+        ref="pictureInput"
+        width="500"
+        height="56" 
+        margin="16" 
+        accept="image/jpeg,image/png" 
+        size="10" 
+        buttonClass="test"
+        :custom-strings="{
+          upload: '<h1>Bummer!</h1>',
+          drag: 'Drag a 😺 GIF or GTFO'
+        }"
+        @change="onChange">
+      </picture-input>
+
+      <div class="test">The test</div> -->
     </div>
 
     <div class="personal-details__row">
       <ui-input 
         label="First name" 
-        :value="fields.firstName"
-        @input="fieldUpdate('firstName', $event)" 
+        v-model="firstName"
       />
 
       <ui-input 
         label="Last name" 
-        :value="fields.lastName"
-        @input="fieldUpdate('lastName', $event)"
+        v-model="lastName"
       />
     </div>
 
     <div class="personal-details__row">
       <ui-input 
         label="Email" 
-        :value="fields.email"
-        @input="fieldUpdate('email', $event)"
+        v-model="email"
       />
 
       <ui-input 
         label="Phone" 
-        :value="fields.phone"
-        @input="fieldUpdate('phone', $event)"
+        v-model="phone"
       />
     </div>
   </div>
@@ -42,8 +54,10 @@
 
 import UIInput from '@/components/ui/UIInput'
 
+import { mapFields } from 'vuex-map-fields'
+
 export default {
-  components: { UIInput, },
+  components: { UIInput },
   props: {
     value: {
       type: Object,
@@ -51,15 +65,15 @@ export default {
       default: () => {},
     },
   },
-  data: () => ({
-    fields: {
-      wantedJob: '',
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-    },
-  }),
+  computed: {
+    ...mapFields('resume', [
+      'wantedJob',
+      'firstName',
+      'lastName',
+      'email',
+      'phone',
+    ]),
+  },
   methods: {
     fieldUpdate(key, value) {
       this.fields = { 
