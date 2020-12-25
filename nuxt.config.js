@@ -13,7 +13,10 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
     "@fortawesome/fontawesome-svg-core/styles.css",
-    "~assets/css/fonts.sass"
+    "~assets/css/fonts.sass",
+    "codemirror/lib/codemirror.css",
+    "codemirror/theme/ayu-dark.css",
+    "animate.css/animate.min.css",
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -21,6 +24,9 @@ export default {
     { src: "~plugins/v-calendar.js", ssr: false },
     { src: "~plugins/vue-picture-input.js", ssr: false },
     { src: "~plugins/vue-editor.js", mode: "client" },
+    { src: "~plugins/vue-codemirror.js", ssr: false },
+    { src: "~/plugins/vue-toasted.js", ssr: false },
+    "~/plugins/vuelidate.js",
     "~plugins/filters.js",
     "~/plugins/fontawesome.js"
   ],
@@ -34,7 +40,8 @@ export default {
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
     // https://go.nuxtjs.dev/pwa
-    "@nuxtjs/pwa"
+    "@nuxtjs/pwa",
+    "@nuxtjs/axios"
   ],
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)

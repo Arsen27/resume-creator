@@ -1,8 +1,8 @@
 <template>
   <main>
     <nav class="navigation">
-      <NuxtLink class="navigation__link" to="/">Home</NuxtLink>
-      <NuxtLink class="navigation__link" to="/editor">Editor</NuxtLink>
+      <nuxt-link class="navigation__link" to="/">Home</nuxt-link>
+      <nuxt-link class="navigation__link" to="/editor">Editor</nuxt-link>
     </nav>
 
     <div class="container">

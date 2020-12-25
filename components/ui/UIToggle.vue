@@ -2,7 +2,7 @@
   <div 
     class="toggle" 
     :class="{ 'toggle_on': on }"
-    @click="on = !on"
+    @click="toggle()"
   >
     <div class="toggle__circle"></div>
   </div>
@@ -11,9 +11,25 @@
 <script>
 
 export default {
+  props: {
+    value: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
   data: () => ({
     on: false,
-  }),  
+  }),
+  methods: {
+    toggle() {
+      this.on = !this.on
+      this.$emit('input', this.on)
+    }
+  },
+  created() {
+    this.on = this.value
+  }
 }
 
 </script>

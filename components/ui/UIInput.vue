@@ -1,7 +1,10 @@
 <template>
   <div 
     class="input"
-    :class="{'input_focused': focused}" 
+    :class="{
+      'input_focused': focused,
+      'input_error': error,
+    }" 
     @click="setFocus()"    
   >
     <span class="input__label">
@@ -10,7 +13,7 @@
 
     <input 
       class="input__field"
-      type="text"
+      :type="type"
       :value="value"
       ref="field"
       @blur.prevent="setBlur()"
@@ -37,6 +40,10 @@ export default {
       type: String,
       required: false,
       default: '',
+    },
+    error: {
+      required: false,
+      default: false,
     },
   },
   data: () => ({
@@ -100,6 +107,12 @@ export default {
       transform: translateY(0)
 
       color: var(--color-accent-blue)
+
+  &_error
+    border-color: var(--color-accent-red)
+
+    .input__label
+      color: var(--color-accent-red)
 
   &__label
     font-size: 16px

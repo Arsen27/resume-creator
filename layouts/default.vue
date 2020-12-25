@@ -54,6 +54,7 @@ textarea
 
 button 
   outline: none
+  font-family: var(--font-main)
 
 // .picture-input
 //   background: transparent

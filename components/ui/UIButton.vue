@@ -26,14 +26,24 @@ export default {
 
 .button
   cursor: pointer
+  border: 0
 
   &_free
     font-size: 16px
     font-weight: 600
 
-    border: 0
     background: none
     color: var(--color-accent-blue)
+
+  &_filled
+    background: var(--color-accent-blue)
+    color: var(--color-text-contrast)
+    border-radius: 6px
+
+    font-size: 16px
+    font-weight: 600
+
+    padding: 13px 20px
 
 
 </style>
