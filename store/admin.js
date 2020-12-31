@@ -3,6 +3,8 @@ import { adminApi } from '@/api'
 
 export default {
   state: {
+    loading: false,
+    
     template: {},
     templates: [],
 
@@ -13,19 +15,24 @@ export default {
   },
 
   getters: {
+    loading: state => state.loading,
+
     template: state => state.template,
     templates: state => state.templates,
-    templatesList: state => state.templatesList,
 
     getField,
   },
 
   mutations: {
     setTemplates(state, templates) {
-      state.templates = templates;
+      state.templates = templates
     },
     setTemplate(state, template) {
-      state.template = template;
+      state.template = template
+    },
+
+    setLoading(state, loading) {
+      state.loading = loading
     },
 
     updateField,
@@ -33,11 +40,15 @@ export default {
 
   actions: {
     loadTemplates({ commit }) {
+      commit('setLoading', true)
+
       adminApi
         .getTemplatesList()
         .then(res => {
           const templates = res.data.data
           commit("setTemplates", templates)
+
+          commit("setLoading", false);
         })
         .catch(error => {
           console.error(error);

@@ -73,15 +73,20 @@ export default {
   computed: {
     formatedDate() {
       const { monthNameShort } = this.$options.filters
-      const { selectedDate } = this
+      const { value } = this
 
-      if (!selectedDate) return ''
+      if (!value) return ''
 
-      return selectedDate.getDate() + ' ' + monthNameShort(selectedDate.getMonth())
+      return value.getDate() + ' ' + monthNameShort(value.getMonth())
     }
   },
   directives: {
     ClickOutside,
+  },
+  updated() {
+    if (this.value) {
+      this.setFocus()
+    }
   },
 }
 

@@ -8,7 +8,7 @@
         :title="item.title"
         :description="formatedDate(item.date)"
         
-        @titleChange="titleChange(i, $event)"
+        @titleChange="item.title = $event"
         @delete="removeItem(item.id)"
       >
         <div class="form">
@@ -88,9 +88,6 @@ export default {
           cards.splice(i, 1)
         }
       })
-    },
-    titleChange(i, text) {
-      this.cards[i].title = text
     },
   },
   created() {

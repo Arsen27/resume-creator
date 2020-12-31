@@ -8,7 +8,7 @@
         :title="place.school"
         :description="formatedDate(place.date)"
         
-        @titleChange="titleChange(i, $event)"
+        @titleChange="place.school = $event"
         @delete="removeItem(['education', place.id])"
       >
         <div class="form">

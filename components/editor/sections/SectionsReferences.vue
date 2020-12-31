@@ -7,7 +7,7 @@
         
         :title="ref.name"
         
-        @titleChange="titleChange(i, $event)"
+        @titleChange="ref.name = $event"
         @delete="removeItem(['references', ref.id])"
       >
         <div class="form">
@@ -57,10 +57,6 @@ export default {
     ...mapActions('resume', [
       'initItems',
     ]), 
-
-    titleChange(i, text) {
-      this.references[i].name = text
-    },
   },
   created() {
     this.initItems('references')

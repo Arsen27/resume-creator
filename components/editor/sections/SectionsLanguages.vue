@@ -7,7 +7,7 @@
         
         :title="lang.name"
         
-        @titleChange="titleChange(i, $event)"
+        @titleChange="lang.name = $event"
         @delete="removeItem(['languages', lang.id])"
       >
         <div class="form">
@@ -53,10 +53,6 @@ export default {
     ...mapActions('resume', [
       'initItems',
     ]), 
-
-    titleChange(i, text) {
-      this.languages[i].name = text
-    },
   },
   created() {
     this.initItems('languages')

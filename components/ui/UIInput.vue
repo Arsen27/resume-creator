@@ -71,7 +71,7 @@ export default {
     },
   },
   updated() {
-    if (this.$props.value) {
+    if (this.value) {
       this.setFocus()
       this.valueModel = this.value
     }

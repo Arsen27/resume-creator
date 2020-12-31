@@ -8,7 +8,7 @@
         :title="item.title"
         :description="formatedDate(item.date)"
         
-        @titleChange="titleChange(i, $event)"
+        @titleChange="item.title = $event"
         @delete="removeItem(['activities', item.id])"
       >
         <div class="form">
@@ -70,11 +70,7 @@ export default {
     ]),
     ...mapActions('resume', [
       'initItems',
-    ]), 
-
-    titleChange(i, text) {
-      this.activities[i].title = text
-    },
+    ]),
   },
   created() {
     this.initItems('activities')

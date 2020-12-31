@@ -9,7 +9,7 @@
           :title="skill.name"
           :description="skill.level"
           
-          @titleChange="titleChange(i, $event)"
+          @titleChange="skill.name = $event"
           @delete="removeItem(['skills', skill.id])"
         >
           <div class="form">

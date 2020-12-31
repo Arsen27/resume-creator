@@ -8,6 +8,13 @@
     </div>
 
     <div class="modal">
+      <div 
+        v-if="title"
+        class="modal__header"
+      >
+        <span class="modal__title">{{ title }}</span>
+      </div>
+
       <slot />
     </div>
   </div>
@@ -28,6 +35,10 @@ export default {
       type: Boolean,
       required: false,
     },
+    title: {
+      type: String,
+      required: false,
+    },
   },
   components: { IconsCross, }
 }
@@ -37,7 +48,7 @@ export default {
 <style lang="sass" scoped>
 
 .modal
-  padding: 20px
+  padding: 30px
   background: #FFFFFF
   border-radius: 17px
 
@@ -54,6 +65,13 @@ export default {
     z-index: 1000
 
     background: rgba(0, 0, 0, 0.5)
+
+  &__header
+    margin-bottom: 25px
+
+  &__title
+    font-size: 24px
+    font-weight: 700
 
   &__close 
     position: absolute

@@ -8,10 +8,10 @@
         :value="title"
       />
 
-      <editor-statusbar class="form__statusbar" />
+      <!-- <editor-statusbar 
+        class="form__statusbar" 
+      /> -->
     </div>
-
-    <div @click="download">Click Me!</div>
 
     <draggable v-model="sections">
       <editor-section
@@ -105,12 +105,6 @@ export default {
   },
   computed: {
     ...mapFields('resume', ['title', 'sections']),
-    // ...mapGetters('resume', [
-    //   'jobTitle', 
-    //   'firstName', 
-    //   'lastName', 
-    //   'workExperiecnes'
-    // ])
   },
   data: () => ({
     dataSnapshot: {
@@ -123,6 +117,7 @@ export default {
         used: false, 
         component: 'sections-custom',
         fieldName: 'sectionsCustom',
+        key: 'custom',
       },
       { 
         icon: 'running', 
@@ -130,6 +125,7 @@ export default {
         used: false, 
         component: 'sections-activities',
         fieldName: 'sectionsExtra',
+        key: 'activities',
       },
       { 
         icon: 'chess-knight', 
@@ -137,6 +133,7 @@ export default {
         used: false, 
         component: 'sections-hobbies',
         fieldName: 'sectionsHobbies',
+        key: 'hobbies',
       },
       { 
         icon: 'list-ul', 
@@ -144,6 +141,7 @@ export default {
         used: false, 
         component: 'sections-references',
         fieldName: 'sectionsReferences',
+        key: 'references',
       },
       { 
         icon: 'medal', 
@@ -151,6 +149,7 @@ export default {
         used: false, 
         component: 'sections-courses',
         fieldName: 'sectionsCourses',
+        key: 'courses',
       },
       { 
         icon: 'briefcase', 
@@ -158,13 +157,15 @@ export default {
         used: false, 
         component: 'sections-internships',
         fieldName: 'sectionsInternships',
+        key: 'internships',
       },
       { 
         icon: 'globe-europe', 
-        name: 'Langueges', 
+        name: 'Languages', 
         used: false, 
         component: 'sections-languages',
         fieldName: 'sectionsLanguages',
+        key: 'languages',
       },
     ],
   }),
@@ -174,20 +175,6 @@ export default {
       'removeSection',
       'changeSectionTitle',
     ]),
-
-    download() {
-      const formData = this.jsonToFormData({ ...this.$store.state.resume })
-  
-      api.post('api/pdf/download/5fdfcdb32326e9237fceecc7', formData, {
-        responseType: 'blob'
-      })
-      .then(res => {
-        const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
-
-        saveAs(pdfBlob, 'resume.pdf');
-      })
-      .catch(err => console.log(err.response))
-    }
   },
 }
 </script>

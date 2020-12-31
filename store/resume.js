@@ -59,7 +59,7 @@ let sectionsInitial = [
 export default {
   namespaced: true,
 
-  state: {
+  state: () => ({
     sections: [...sectionsInitial],
 
     title: "Your resume title",
@@ -80,7 +80,7 @@ export default {
     internships: [],
     languages: [],
     references: []
-  },
+  }),
 
   getters: {
     wantedJob: state => state.wantedJob,
@@ -131,14 +131,15 @@ export default {
     },
     addSection(state, section) {
       const id = state.sections.length - 1;
-      let { name, component } = section;
+      let { name, component, key } = section;
 
       state.sections.push({
         id,
         component: component,
         fixed: false,
         title: name,
-        description: ""
+        description: "",
+        key
       });
     },
     removeSection(state, sectionId) {
@@ -148,6 +149,7 @@ export default {
         }
       });
     },
+
     changeSectionTitle(state, [sectionId, value]) {
       let section = state.sections.find(item => item.id === sectionId);
       section.title = value;
@@ -163,7 +165,7 @@ export default {
           commit("addItem", [sectionName]);
         }
       }
-    },
+    }
   }
 };
 
