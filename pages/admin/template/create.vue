@@ -1,27 +1,10 @@
 <template>
   <div class="template"> 
-    <ui-modal v-model="pictureModal">
-      <div class="picture-modal">
-        <picture-input 
-          ref="pictureInput"
-          width="600" 
-          height="300" 
-          margin="16" 
-          accept="image/jpeg,image/png" 
-          :custom-strings="{
-            drag: 'Drag your picture'
-          }"
-          @change="imageChange"
-        />
-      </div>
-    </ui-modal>
-
     <div class="template__header">
       <div class="template__header-left">
         <nuxt-link to="/admin">
           <icons-arrow />
         </nuxt-link>
-
 
         <ui-editable-text 
           class="template__name"
@@ -56,13 +39,9 @@
       </div>
 
       <div class="template__header-right">
-        <div @click="deleteTemplate()">
-          <icons-delete class="template__delete" />
-        </div>
-
         <button 
           class="template__save-button"
-          @click="updateTemplate"
+          @click="createTemplate"
         >
           Save
         </button>
@@ -100,16 +79,14 @@ import { adminApi } from '@/api'
 
 import IconsArrow from '@/components/icons/IconsArrow'
 import UIToggle from '@/components/ui/UIToggle'
-import UIModal from '@/components/ui/UIModal'
 import UIEditableTest from '@/components/ui/UIEditableText'
 import formData from '@/mixins/forms/formData.mixin'
 
 export default {
   mixins: [ formData ],
-  components: { IconsArrow, UIToggle, UIModal },
+  components: { IconsArrow, UIToggle, },
   data: () => ({
     template: {},
-    pictureModal: false,
     image: null,
     cmOptionsCode: {
       mode: 'text/html',
@@ -122,15 +99,8 @@ export default {
       theme: 'default',
     }, 
   }),
-  computed: {
-    id() {
-      return this.$route.params.slug
-    },
-  },
   methods: {
-    ...mapActions('admin', ['loadTemplate']),
-
-    updateTemplate() {
+    createTemplate() {
       const { name, body, style } = this.template
       const icon = this.image
 
@@ -141,40 +111,19 @@ export default {
         style,
       })
 
-      adminApi.updateTemplate(this.id, formData)
+      adminApi.createTemplate(formData)
         .then(res => {
           console.log(res)
-        })
-        .catch(err => console.log(err))
-    },
-    deleteTemplate() {
-      adminApi.deleteTemplate(this.id)
-        .then(res => {
+        
           this.$router.push('/admin')
         })
-        .catch(err => {
-          console.log(err)
-        })
+        .catch(err => console.log(err))
     },
     imageChange() {
       this.image = this.$refs.image.files[0]
       console.log(this.image)
     },
   },
-  created() {
-    const { loadTemplate, id } = this
-
-    loadTemplate(id)
-
-    adminApi
-      .getFullTemplate(id)
-      .then(res => {
-        this.template = res.data
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  }
 }
 
 </script>
@@ -212,7 +161,7 @@ export default {
     font-size: 22px
     font-weight: 600
     margin-left: 25px
-  
+
   &__content
     display: grid
     grid-template-columns: 1fr 1fr
@@ -237,14 +186,6 @@ export default {
 
     cursor: pointer
 
-  &__delete
-    height: 20px
-    width: auto
-
-    margin-right: 20px
-
-    cursor: pointer
-
   &__image
     display: flex
     align-items: center
@@ -261,11 +202,6 @@ export default {
 
     &-input
       display: none
-
-  
-.picture-modal
-  min-height: 200px
-  min-width: 600px
 
 </style>
 

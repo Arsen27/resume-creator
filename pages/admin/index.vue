@@ -4,6 +4,10 @@
       <h2 class="admin__title">
         Templates
       </h2>
+
+      <nuxt-link to="/admin/template/create">
+        <button class="admin__add-new">Add new</button>
+      </nuxt-link>
     </div>
 
     <div class="admin__content">
@@ -13,8 +17,12 @@
           v-for="template in templates" :key="template.id"
         >
           <nuxt-link :to="`/admin/template/${template._id}`">
-            <div class="template__image">
-              <img :src="apiUrl + template.icon" alt="template icon">
+            <div class="template__image-wrapper">
+              <img
+                class="template__image" 
+                :src="apiUrl + template.icon" 
+                alt="template icon"
+              >
             </div>
 
             <div class="template__content">
@@ -72,6 +80,21 @@ export default {
     grid-template-columns: repeat(6, 1fr)
     grid-gap: 25px    
 
+  &__header
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+  &__add-new
+    padding: 12px 17px
+
+    color: var(--color-text-contrast)
+    border-radius: 100px
+    border: 0
+    background: var(--color-accent-blue)
+
+    cursor: pointer
+
 .template
   border: 1px solid var(--color-border-light)
   border-radius: 10px
@@ -79,13 +102,17 @@ export default {
   overflow: hidden
 
   &__image
-    width: 100%
-    height: 100px
-    display: flex
-    justify-content: center
-    align-items: center
+    max-height: 90%
+    max-width: 90%
 
-    border-bottom: 1px solid var(--color-border-light)
+    &-wrapper
+      width: 100%
+      height: 100px
+      display: flex
+      justify-content: center
+      align-items: center
+
+      border-bottom: 1px solid var(--color-border-light)
 
   &__content
     padding: 20px 20px

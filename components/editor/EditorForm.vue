@@ -2,13 +2,16 @@
   <div class="form">
     <div class="form__header">
       <ui-textarea
+        ref="title"
         style-type="free"
         class="form__title"
-        :value="dataSnapshot.title"
+        :value="title"
       />
 
       <editor-statusbar class="form__statusbar" />
     </div>
+
+    <div @click="download">Click Me!</div>
 
     <draggable v-model="sections">
       <editor-section
@@ -18,12 +21,13 @@
         :title="section.title"
         :description="section.description"
 
+        @changeTitle="changeSectionTitle([section.id, $event])"
         @delete="removeSection(section.id)"
       >
         <component
           :is="section.component"
+          :id="section.id"
           :itemComponent="section.itemComponent"
-          @dataChange="updateData(section.fieldName, $event)"
         />
       </editor-section>
     </draggable>
@@ -68,14 +72,18 @@ import SectionsInternships from '@/components/editor/sections/SectionsInternship
 import SectionsLanguages from '@/components/editor/sections/SectionsLanguages'
 
 import draggable from 'vuedraggable'
+import { saveAs } from 'file-saver';
 
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
+import formData from '@/mixins/forms/formData.mixin'
 
+import { api } from '@/api'
 
 export default {
+  mixins: [ formData ],
   components: { 
-    UITextarea, 
+    UITextarea,
     EditorStatusbar, 
     EditorSection,
 
@@ -96,9 +104,13 @@ export default {
     draggable,
   },
   computed: {
-    ...mapFields('editor', [
-      'sections',
-    ]),
+    ...mapFields('resume', ['title', 'sections']),
+    // ...mapGetters('resume', [
+    //   'jobTitle', 
+    //   'firstName', 
+    //   'lastName', 
+    //   'workExperiecnes'
+    // ])
   },
   data: () => ({
     dataSnapshot: {
@@ -157,20 +169,26 @@ export default {
     ],
   }),
   methods: {
-    ...mapMutations('editor', [
+    ...mapMutations('resume', [
       'addSection',
       'removeSection',
+      'changeSectionTitle',
     ]),
 
-    updateData(key, value) {
-      this.dataSnapshot = {
-        ...this.dataSnapshot,
-        [key]: value,
-      }
+    download() {
+      const formData = this.jsonToFormData({ ...this.$store.state.resume })
+  
+      api.post('api/pdf/download/5fdfcdb32326e9237fceecc7', formData, {
+        responseType: 'blob'
+      })
+      .then(res => {
+        const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
 
-      console.log('snapshot', this.dataSnapshot)
-    },
-  }
+        saveAs(pdfBlob, 'resume.pdf');
+      })
+      .catch(err => console.log(err.response))
+    }
+  },
 }
 </script>
 

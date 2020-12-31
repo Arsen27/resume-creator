@@ -4,16 +4,16 @@ import authApi from '@/api/auth.api'
 export default {
   namespaced: true,
   
-  state: {
-    status: {
-      loggedIn: null,
-      errors: [],
-    },
-    loginForm: {
-      email: '',
-      password: '',
-    },
-  },
+  state: () => ({
+      status: {
+        loggedIn: null,
+        errors: []
+      },
+      loginForm: {
+        email: "",
+        password: ""
+      }
+    }),
 
   getters: {
     loggedIn: (state) => state.status.loggedIn,
@@ -26,6 +26,8 @@ export default {
     loginSuccess(state) {
       state.status.loggedIn = true
     }, 
+
+    updateField,
   },
 
   actions: {
@@ -42,7 +44,5 @@ export default {
           }
         }) 
     },
-
-    updateField,
   },
 }

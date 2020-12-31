@@ -8,6 +8,7 @@
         :title="place.title"
         :description="formatedDate(place.date)"
         
+        @titleChange="titleChange(i, $event)"
         @delete="removeItem(['workExperiences', place.id])"
       >
         <div class="form">
@@ -52,9 +53,11 @@ import draggable from 'vuedraggable'
 
 import { mapActions, mapMutations } from 'vuex'
 import { mapMultiRowFields, mapFields } from 'vuex-map-fields'
- 
+
+import { dateFormat } from '@/mixins'
 
 export default {
+  mixins: [ dateFormat ], 
   components: { UIButton, draggable },
   computed: {
     ...mapMultiRowFields('resume', { workExperiencesMulti: 'workExperiences' }),
@@ -68,17 +71,10 @@ export default {
     ...mapActions('resume', [
       'initItems',
     ]), 
-
-    dateFormat(date) {
-      const { monthNameShort } = this.$options.filters
-      
-      return `${monthNameShort(date.getMonth())} ${date.getFullYear()}`
+    
+    titleChange(i, text) {
+      this.workExperiences[i].title = text
     },
-    formatedDate({ from, to }) {
-      const { dateFormat } = this
-      
-      return dateFormat(from) + ' - ' + dateFormat(to)
-    },    
   },
   created() {
     this.initItems('workExperiences')
@@ -90,7 +86,6 @@ export default {
 <style lang="sass" scoped>
 
 .places
-
   &__place 
     margin-bottom: 20px
 

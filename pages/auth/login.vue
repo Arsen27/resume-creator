@@ -21,7 +21,7 @@
           <ui-input 
             label="Email" 
             :error="errorsEmail.length"
-            v-model="loginForm.email"
+            v-model="email"
           />
         </div>
 
@@ -41,7 +41,7 @@
             label="Password"
             type="password"
             :error="errorsPassword.length"
-            v-model="loginForm.password"
+            v-model="password"
           />
         </div>
 
@@ -74,16 +74,22 @@ export default {
   }),
   computed: {
     ...mapFields('auth', ['loggedIn', 'loginForm', 'status.errors']),
+    ...mapFields('auth', [
+      'loginForm.email',
+      'loginForm.password',
+      'loggedIn',
+      'status.errors',
+    ]),
 
     form() {
-      return this.$v.loginForm
+      return this.$v
     },
     errorsEmail() {
       const { email } = this.form
-      const { loginForm, submited } = this
+      const { submited } = this
       let errors = []
 
-      if (loginForm.email || submited) {
+      if (email || submited) {
         !email.email    && errors.push('Email is not valid')
         !email.required && errors.push('This field cannot be empty')
       }
@@ -92,10 +98,10 @@ export default {
     },
     errorsPassword() {
       const { password } = this.form
-      const { loginForm, submited } = this
+      const { submited } = this
       let errors = []
 
-      if (loginForm.password || submited) { 
+      if (password || submited) { 
         !password.minLength && errors.push('Password is invalid')
         !password.required  && errors.push('This field cannot be empty')
       }
@@ -135,16 +141,14 @@ export default {
     }
   },
   validations: {
-    loginForm: {
-      email: {
-        required,
-        email,
-      },
-      password: {
-        required,
-        minLength: minLength(6),
-      },
-    }
+    email: {
+      required,
+      email,
+    },
+    password: {
+      required,
+      minLength: minLength(6),
+    },
   },
   mounted() {
     if (this.loggedIn) {

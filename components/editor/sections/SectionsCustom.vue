@@ -1,17 +1,37 @@
 <template>
   <div class="custom">
     <draggable>
-      <cards-custom 
+      <editor-card
         class="custom__item"
-        v-for="(item, i) in items" :key="i"
-
-        :id="item.id"
+        v-for="(item, i) in cards" :key="i"
+        
         :title="item.title"
-        :date="item.date"
+        :description="formatedDate(item.date)"
+        
+        @titleChange="titleChange(i, $event)"
+        @delete="removeItem(item.id)"
+      >
+        <div class="form">
+          <div class="form__row">
+            <ui-input label="Activity name, job title etc." v-model="item.title" />
+            <ui-input label="City" v-model="item.city" />
+          </div>
 
-        @delete="deleteItem(item.id)"
-        @dataChange="updateData(item.id, $event)"
-      />
+          <div class="form__row">
+            <div class="form__period">
+              <ui-date-picker label="Start date" v-model="item.date.from" />
+              <ui-date-picker label="End date" v-model="item.date.to" />
+            </div>
+          </div>
+
+          <div class="form__row">
+            <span class="form__label">Description</span>
+            <div>
+              <ui-text-editor v-model="item.description" />
+            </div>
+          </div>
+        </div>
+      </editor-card>    
     </draggable>
 
     <ui-button 
@@ -26,56 +46,64 @@
 <script>
 
 import draggable from 'vuedraggable'
+import { mapMutations } from 'vuex'
+
+import { dateFormat } from '@/mixins'
+import UIButton from '@/components/ui/UIButton'
 
 export default {
-  components: { draggable, },
+  mixins: [ dateFormat ],
+  props: {
+    id: {
+      type: Number,
+      required: true,
+    },
+  },
+  components: { draggable, UIButton, },
   data: () => ({
-    items: [
-      {
-        id: 0,
-        title: '(Not specified)',
-        date: {
-          from: new Date(),
-          to: new Date(),
-        },
-      }
-    ]
+    cards: [],
   }),
   methods: {
+    ...mapMutations('resume', ['updateCustomSection']),
+
     addNewItem() {
-      this.items.push({
-        id: this.items.length,
-        title: '(Not specified)',
+      const { cards } = this
+
+      cards.push({
+        id: cards.length,
+        title: '',
+        city: '',
         date: {
           from: new Date(),
           to: new Date(),
         },
+        description: '',
       })
     },
-    deleteItem(id) {
-      this.items.forEach((item, i) => {
-        if (item.id === id) {
-          this.items.splice(i, 1)
+    removeItem(id) {
+      const { cards } = this 
 
-          return
+      cards.forEach((item, i) => {
+        if (item.id === id) {
+          cards.splice(i, 1)
         }
       })
     },
-    updateData(id, value) {
-      this.items.forEach(item => {
-        if (item.id === id) {
-          item.value = value
-          
-          return
-        }
-      })
-
-      this.$emit('dataChange', this.items)
+    titleChange(i, text) {
+      this.cards[i].title = text
     },
   },
-  mounted() {
-    this.$emit('dataChange', this.items)
+  created() {
+    this.addNewItem()
+    this.updateCustomSection([this.id, {
+      items: this.cards
+    }])
   },
+  updated() {
+    this.updateCustomSection([this.id, {
+      items: this.cards
+    }])
+  }
 }
 
 </script>
@@ -92,6 +120,31 @@ export default {
 
   &__add-new-button
     margin-top: 25px
+
+
+.form
+  display: grid
+  grid-gap: 22px 0px
+
+  &__row
+    display: grid
+    grid-gap: 0px 24px
+
+    &:nth-of-type(1)
+      grid-template-columns: 1fr 1fr
+
+    &:nth-of-type(2)
+      grid-template-columns: 1fr 1fr
+
+  &__period
+    display: grid
+    grid-template-columns: 1fr 1fr
+    grid-gap: 0 10px
+    
+  &__label
+    font-weight: 600
+    font-size: 16px
+    margin-bottom: 15px
 
 </style>
 

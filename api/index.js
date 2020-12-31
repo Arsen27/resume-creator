@@ -10,6 +10,22 @@ const api = axios.create({
   baseURL: API_URL,
 })
 api.defaults.headers.common['app'] = APP_TOKEN
+api.interceptors.request.use(
+  function(config) {
+    // Do something before request is sent
+    const user = localStorage.getItem('user')
+    if (user) {
+      const token = JSON.parse(user).token
+      config.headers.authorization = `Bearer ${token}`
+    }
+
+    return config;
+  },
+  function(error) {
+    // Do something with request error
+    return Promise.reject(error);
+  }
+);
 
 export {
   API_URL,

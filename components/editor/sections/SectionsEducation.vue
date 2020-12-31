@@ -8,6 +8,7 @@
         :title="place.school"
         :description="formatedDate(place.date)"
         
+        @titleChange="titleChange(i, $event)"
         @delete="removeItem(['education', place.id])"
       >
         <div class="form">
@@ -53,8 +54,10 @@ import draggable from 'vuedraggable'
 import { mapActions, mapMutations } from 'vuex'
 import { mapMultiRowFields, mapFields } from 'vuex-map-fields'
 
+import { dateFormat } from '@/mixins'
 
 export default {
+  mixins: [ dateFormat ],
   components: { UIButton, draggable },
   computed: {
     ...mapFields('resume', ['education']),
@@ -69,16 +72,9 @@ export default {
       'initItems',
     ]), 
 
-    dateFormat(date) {
-      const { monthNameShort } = this.$options.filters
-      
-      return `${monthNameShort(date.getMonth())} ${date.getFullYear()}`
+    titleChange(i, text) {
+      this.education[i].school = text
     },
-    formatedDate({ from, to }) {
-      const { dateFormat } = this
-      
-      return dateFormat(from) + ' - ' + dateFormat(to)
-    },    
   },
   created() {
     this.initItems('education')

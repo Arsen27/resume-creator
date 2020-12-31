@@ -1,26 +1,5 @@
-// # TODO
-// # 1. Show experience toggle
-// # 2. Add from templates
-
 <template>
   <div class="skills">
-    <div class="skills__exp-level-show">
-      <ui-toggle />
-      <span>Don't show experience level</span>
-    </div>
-
-    <div class="skills__templates">
-      <editor-skill-template 
-        class="skills__template"
-        v-for="(skill, i) in skillTemplates" :key="skill.id"
-
-        :checked="skill.checked" 
-        @click="skillTemplates[i].checked = true"
-      >
-        {{ skill.name }}
-      </editor-skill-template>
-    </div>
-
     <div class="skills__items">
       <draggable v-model="skills">
         <editor-card
@@ -30,6 +9,7 @@
           :title="skill.name"
           :description="skill.level"
           
+          @titleChange="titleChange(i, $event)"
           @delete="removeItem(['skills', skill.id])"
         >
           <div class="form">
@@ -97,6 +77,10 @@ export default {
     ...mapActions('resume', [
       'initItems',
     ]),
+
+    titleChange(i, text) {
+      this.skills[i].name = text
+    },
   },
   created() {
     this.initItems('skills')
@@ -108,25 +92,13 @@ export default {
 <style lang="sass" scoped>
 
 .skills 
-
-  &__exp-level-show
-    display: grid
-    grid-template-columns: auto 1fr
-    grid-gap: 0 13px
-    align-items: center
-
   &__templates
     display: flex
     flex-wrap: wrap
 
-    margin-top: 25px
-
   &__template 
     margin-right: 8px
     margin-bottom: 10px
-
-  &__items
-    margin-top: 30px
 
   &__item 
     margin-bottom: 20px

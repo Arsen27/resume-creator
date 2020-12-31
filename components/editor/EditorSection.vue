@@ -1,7 +1,3 @@
-// # TODO
-// # 1. Title editor 
-// # 2. Section delete
-
 <template>
   <section 
     class="section"
@@ -25,6 +21,7 @@
             :value="title" 
             :focused="titleFocused"
             :showPen="false"
+            @input="$emit('changeTitle', $event)"
           />
           <icons-chevron :direction="opened ? 'up' : 'down'" />
         </div>

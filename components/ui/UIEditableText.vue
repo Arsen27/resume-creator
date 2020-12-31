@@ -3,7 +3,7 @@
     <div>
       <span 
         class="field__text"
-        :style="{ visibility: focused ? 'hidden' : 'visible' }"
+        :style="{ visibility: dataFocused ? 'hidden' : 'visible' }"
       >
         {{ value ? value : '(Not specified)' }}
       </span>
@@ -20,7 +20,7 @@
 
     <div
       @click.stop="setFocus"
-      v-show="!focused" 
+      v-show="!dataFocused" 
     >
       <IconsPen v-if="showPen" class="field__pen-icon" />
     </div>
@@ -36,7 +36,7 @@ export default {
   props: {
     value: {
       type: String,
-      required: true,
+      required: false,
     },
     showPen: {
       type: Boolean,
@@ -49,6 +49,9 @@ export default {
       default: false,
     },
   },
+  data: () => ({
+    dataFocused: false,
+  }),
   watch: {
     focused(value) {
       if (value) {
@@ -62,13 +65,16 @@ export default {
     setFocus() {
       this.$refs.input.style.display = 'block'
       this.$refs.input.focus()
-      this.focused = true
+      this.dataFocused = true
     },
     setBlur() {
       this.$refs.input.style.display = 'none'
-      this.focused = false
+      this.dataFocused = false
     },
   },
+  created() {
+    this.dataFocused = this.focused
+  }
 }
 
 </script>

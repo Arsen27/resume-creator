@@ -7,7 +7,7 @@
         <ui-editable-text 
           class="item__title" 
           :value="title" 
-          @input="$emit('input', $event)"
+          @input="$emit('titleChange', $event)"
         />
         
         <span 

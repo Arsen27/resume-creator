@@ -4,7 +4,12 @@ import { adminApi } from '@/api'
 export default {
   state: {
     template: {},
-    templates: []
+    templates: [],
+
+    creator: {
+      name: '',
+      code: '',
+    }
   },
 
   getters: {
@@ -21,7 +26,9 @@ export default {
     },
     setTemplate(state, template) {
       state.template = template;
-    }
+    },
+
+    updateField,
   },
 
   actions: {
@@ -50,7 +57,5 @@ export default {
           console.error(error);
         });
     },
-
-    updateField,
   }
 };

@@ -5,23 +5,6 @@
         label="Wanted job title" 
         v-model="wantedJob"
       />
-
-      <!-- <picture-input 
-        ref="pictureInput"
-        width="500"
-        height="56" 
-        margin="16" 
-        accept="image/jpeg,image/png" 
-        size="10" 
-        buttonClass="test"
-        :custom-strings="{
-          upload: '<h1>Bummer!</h1>',
-          drag: 'Drag a 😺 GIF or GTFO'
-        }"
-        @change="onChange">
-      </picture-input>
-
-      <div class="test">The test</div> -->
     </div>
 
     <div class="personal-details__row">

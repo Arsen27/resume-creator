@@ -10,7 +10,23 @@
     </div>
 
     <div class="editor__right">
+      <div class="editor__preview">
+
+      </div>
       
+      <div class="editor__download">
+        <ui-button 
+          styleType="free"
+        >
+          Select template
+        </ui-button>
+
+        <ui-button 
+          styleType="filled"
+        >
+          Download PDF
+        </ui-button>
+      </div>
     </div>
   </main>
 </template>
@@ -18,11 +34,16 @@
 <script>
 
 import IconsArrow from '@/components/icons/IconsArrow'
+import UIButton from '@/components/ui/UIButton'
 
 export default {
+  name: 'editor',
   components: { 
-    IconsArrow, 
+    IconsArrow, UIButton,
   },
+  data: () => ({
+    showSelectTemplate: false,
+  }),
 }
 
 </script>
@@ -54,6 +75,18 @@ export default {
     margin-left: 20px
 
   &__right 
+    padding: 20px
+
+    display: grid
+    grid-template-rows: 1fr auto
+
     background: #1D242B
+
+  &__download
+    padding: 0 10px
+    display: flex
+    justify-content: space-between
+  
+    
 
 </style>

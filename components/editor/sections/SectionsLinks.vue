@@ -7,6 +7,7 @@
         
         :title="link.label"
         
+        @titleChange="titleChange(i, $event)"
         @delete="removeItem(['links', link.id])"
       >
         <div class="form">
@@ -51,6 +52,10 @@ export default {
     ...mapActions('resume', [
       'initItems',
     ]), 
+
+    titleChange(i, text) {
+      this.links[i].label = text
+    },
   },
   created() {
     this.initItems('links')

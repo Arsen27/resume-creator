@@ -1,23 +1,82 @@
 import { getField, updateField } from 'vuex-map-fields'
+import { saveAs } from "file-saver"
+import { api } from '@/api'
+
+
+let sectionsInitial = [
+  {
+    id: 0,
+    key: "personalDetails",
+    component: "sections-personal-details",
+    fixed: false,
+    title: "Personal Details",
+    description: ""
+  },
+  {
+    id: 1,
+    key: "professionalSummary",
+    component: "sections-professional-summary",
+    fixed: false,
+    title: "Professional Summary",
+    description: "Include 2-3 clear sentences about your overall experience"
+  },
+  {
+    id: 2,
+    key: "workExperiences",
+    component: "sections-employment-history",
+    fixed: false,
+    title: "Employment History",
+    description:
+      "Include your last 10 years of relevant experience and dates in this section. List your most recent position first."
+  },
+  {
+    id: 3,
+    key: "education",
+    component: "sections-education",
+    fixed: false,
+    title: "Education",
+    description:
+      "If relevant, include your most recent educational achievements and the dates here"
+  },
+  {
+    id: 4,
+    key: 'links',
+    component: "sections-links",
+    fixed: false,
+    title: "Websites & Social Links",
+    description: "You can add links to websites you want hiring managers to see! Perhaps It will be  a link to your portfolio, LinkedIn profile, or personal website"
+  },
+  {
+    id: 5,
+    key: 'skills',
+    component: "sections-skills",
+    fixed: false,
+    title: "Skills",
+    description: ""
+  }
+];
 
 export default {
   namespaced: true,
 
   state: {
-    wantedJob: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    professionalSummary: '',
+    sections: [...sectionsInitial],
+
+    title: "Your resume title",
+    wantedJob: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    professionalSummary: "",
     workExperiences: [],
     education: [],
     links: [],
     skills: [],
-    custom: [],
+    custom: {},
     activities: [],
     courses: [],
-    hobbies: '',
+    hobbies: "",
     internships: [],
     languages: [],
     references: []
@@ -39,47 +98,74 @@ export default {
     internships: state => state.internships,
     languages: state => state.languages,
     references: state => state.references,
+    sections: state => state.sections,
 
     getField
   },
 
   mutations: {
     addItem(state, [sectionName, item]) {
-      const section = state[sectionName]
-      const id = section.length
+      const section = state[sectionName];
+      const id = section.length;
 
       if (!item) {
-        item = Object.assign({}, itemTemplates[sectionName])
+        item = Object.assign({}, itemTemplates[sectionName]);
       }
 
       if (id > -1) {
-        item.id = id
-        state[sectionName].push(item)
+        item.id = id;
+        state[sectionName].push(item);
       }
     },
     removeItem(state, [sectionName, itemId]) {
-      const section = state[sectionName]
+      const section = state[sectionName];
 
       section.forEach((item, i) => {
         if (item.id === itemId) {
-          section.splice(i, 1)
+          section.splice(i, 1);
         }
       });
+    },
+    updateCustomSection(state, [id, value]) {
+      state.custom[id] = value;
+    },
+    addSection(state, section) {
+      const id = state.sections.length - 1;
+      let { name, component } = section;
+
+      state.sections.push({
+        id,
+        component: component,
+        fixed: false,
+        title: name,
+        description: ""
+      });
+    },
+    removeSection(state, sectionId) {
+      state.sections.forEach((section, i) => {
+        if (section.id === sectionId) {
+          state.sections.splice(i, 1);
+        }
+      });
+    },
+    changeSectionTitle(state, [sectionId, value]) {
+      let section = state.sections.find(item => item.id === sectionId);
+      section.title = value;
     },
 
     updateField
   },
 
   actions: {
-    initItems({ commit, getters }, sectionName) {      
+    initItems({ commit, getters }, sectionName) {
       if (getters[sectionName]) {
         if (!getters[sectionName].length) {
-          commit("addItem", [sectionName])
+          commit("addItem", [sectionName]);
         }
       }
     },
   }
-}
+};
 
 const itemTemplates = {
   workExperiences: {
