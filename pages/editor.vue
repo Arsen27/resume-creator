@@ -57,6 +57,7 @@ import UIModal from '@/components/ui/UIModal'
 import { mapGetters, mapActions } from 'vuex'
 import { api } from '@/api'
 import formData from '@/mixins/forms/formData.mixin'
+import fileReader from '@/helpers/fileReader'
 
 
 export default {
@@ -112,7 +113,7 @@ export default {
       })
       .catch(err => console.log(err.response))
     },
-    previewUpdate() {
+    async previewUpdate() {
       const { template, getTemplateData } = this
      
       if (template.body) {
@@ -120,7 +121,15 @@ export default {
         let style = template.style
         style += '* { box-sizing: border-box; }'
         const htmlTemplate = `<html><head><style>${style}</style></head><body>${body}</body></html>`
-        const html = ejs.render(htmlTemplate, getTemplateData())
+        const data = getTemplateData()
+        if (data.icon) {
+          try {
+            data.icon = await fileReader(data.icon)
+          } catch(err) {
+            console.error(err)
+          }
+        }
+        const html = ejs.render(htmlTemplate, data)
         this.preview.innerHTML = html
       } 
     }

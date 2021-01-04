@@ -64,7 +64,7 @@ export default {
 
     title: "Your resume title",
     wantedJob: "",
-    icon: {},
+    icon: null,
     firstName: "",
     lastName: "",
     email: "",

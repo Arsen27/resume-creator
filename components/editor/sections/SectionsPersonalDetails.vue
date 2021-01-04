@@ -15,7 +15,7 @@
           @change="photoChange()"
         />
 
-        <!-- <label 
+        <label 
           class="photo-input__label"
           for="photo"
         >
@@ -24,7 +24,7 @@
           <div class="photo-input__title">
             {{ icon && icon.name || 'Upload photo' }}
           </div>
-        </label> -->
+        </label>
       </div>
     </div>
 
@@ -115,7 +115,7 @@ export default {
     grid-gap: 0 24px
 
     &:nth-of-type(1)
-      grid-template-columns: 1fr
+      grid-template-columns: 1fr 1fr
 
     &:nth-of-type(2)
       grid-template-columns: 1fr 1fr
