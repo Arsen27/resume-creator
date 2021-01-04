@@ -1,19 +1,19 @@
 <template>
-  <div class="admin">
-    <div class="admin__header">
-      <h2 class="admin__title">
+  <div class="templates">
+    <div class="templates__header">
+      <h2 class="templates__title">
         Templates
       </h2>
 
       <nuxt-link to="/admin/template/create">
-        <button class="admin__add-new">Add new</button>
+        <button class="templates__add-new">Add new</button>
       </nuxt-link>
     </div>
 
-    <div class="admin__content">
-      <div class="admin__templates">
+    <div class="templates__content">
+      <div class="templates__templates">
         <div 
-          class="admin__template template"
+          class="templates__template template"
           v-for="template in templates" :key="template.id"
         >
           <nuxt-link :to="`/admin/template/${template._id}`">
@@ -48,12 +48,12 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      templates: 'admin/templates',
+      templates: 'templates/templates',
       loggedIn: 'auth/loggedIn',
     }),
   },
   methods: {
-    ...mapActions('admin', ['loadTemplates']),
+    ...mapActions('templates', ['loadTemplates']),
   },
   created() {
     if (!this.loggedIn) {
@@ -68,7 +68,7 @@ export default {
 
 <style lang="sass" scoped>
 
-.admin
+.templates
   padding: 40px 50px
 
   &__title

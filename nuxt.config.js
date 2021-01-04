@@ -16,7 +16,7 @@ export default {
     "~assets/css/fonts.sass",
     "codemirror/lib/codemirror.css",
     "codemirror/theme/ayu-dark.css",
-    "animate.css/animate.min.css",
+    "animate.css/animate.min.css"
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -45,6 +45,10 @@ export default {
   ],
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
-  ssr: false,
+  build: {
+    extend(config, { isDev, isClient }) {
+      config.node = { fs: 'empty' }
+    }
+  },
+  ssr: false
 };

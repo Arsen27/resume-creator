@@ -70,6 +70,7 @@ export default {
     setBlur() {
       this.$refs.input.style.display = 'none'
       this.dataFocused = false
+      this.$emit('blur')
     },
   },
   created() {

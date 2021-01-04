@@ -5,10 +5,10 @@ export default {
       
       return `${monthNameShort(date.getMonth())} ${date.getFullYear()}`
     },
-    formatedDate({ from, to }) {
+    formatedDate(dateFrom, dateTo) {
       const { dateFormat } = this
       
-      return dateFormat(from) + ' - ' + dateFormat(to)
+      return dateFormat(dateFrom) + ' - ' + dateFormat(dateTo)
     },
   }
 }

@@ -42,7 +42,6 @@ export default {
     value: {
       type: Date,
       required: false,
-      default: new Date(),
     },
   },
   data: () => ({

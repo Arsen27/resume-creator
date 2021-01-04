@@ -18,6 +18,7 @@
     "animate.css": "^4.1.1",
     "autosize": "^4.0.2",
     "core-js": "^3.6.5",
+    "ejs": "^3.1.5",
     "file-saver": "^2.0.5",
     "nuxt": "^2.14.6",
     "v-calendar": "^2.1.1",
@@ -33,7 +34,9 @@
   },
   "devDependencies": {
     "fibers": "^5.0.0",
+    "file": "^0.2.2",
     "sass": "^1.30.0",
-    "sass-loader": "^10.1.0"
+    "sass-loader": "^10.1.0",
+    "system": "^2.0.1"
   }
 }

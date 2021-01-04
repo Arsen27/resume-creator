@@ -21,6 +21,7 @@
             :value="title" 
             :focused="titleFocused"
             :showPen="false"
+            @blur="titleFocused = false"
             @input="$emit('changeTitle', $event)"
           />
           <icons-chevron :direction="opened ? 'up' : 'down'" />
@@ -33,7 +34,7 @@
             />
           </div>
 
-          <div @click.stop="$emit('delete', id)">
+          <div @click.stop="$emit('delete')">
             <icons-delete class="section__delete-icon" />
           </div>
         </div>

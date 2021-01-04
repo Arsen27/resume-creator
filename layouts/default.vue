@@ -33,7 +33,6 @@
   border-radius: 4px
   background-color: var(--color-border-light)
 
-
 body
   font-family: var(--font-main)
   font-weight: 500

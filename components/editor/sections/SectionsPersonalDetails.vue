@@ -5,6 +5,27 @@
         label="Wanted job title" 
         v-model="wantedJob"
       />
+
+      <div class="photo-input">
+        <input 
+          class="photo-input__input"
+          type="file" 
+          ref="photo" 
+          id="photo" 
+          @change="photoChange()"
+        />
+
+        <!-- <label 
+          class="photo-input__label"
+          for="photo"
+        >
+          <icons-photo />
+
+          <div class="photo-input__title">
+            {{ icon && icon.name || 'Upload photo' }}
+          </div>
+        </label> -->
+      </div>
     </div>
 
     <div class="personal-details__row">
@@ -35,12 +56,15 @@
 
 <script>
 
-import UIInput from '@/components/ui/UIInput'
-
 import { mapFields } from 'vuex-map-fields'
+import { mapMutations } from 'vuex'
+
+import UIInput from '@/components/ui/UIInput'
+import IconsPhoto from '@/components/icons/IconsPhoto'
+
 
 export default {
-  components: { UIInput },
+  components: { UIInput, IconsPhoto },
   props: {
     value: {
       type: Object,
@@ -55,9 +79,12 @@ export default {
       'lastName',
       'email',
       'phone',
+      'icon',
     ]),
   },
   methods: {
+    ...mapMutations('resume', ['setIcon']), 
+
     fieldUpdate(key, value) {
       this.fields = { 
         ...this.fields, 
@@ -66,9 +93,12 @@ export default {
 
       this.$emit('dataChange', this.fields)
     },
-  },
-  mounted() {
-    this.$emit('dataChange', this.places)
+    photoChange() {
+      const { setIcon } = this
+      const file = this.$refs.photo.files[0]
+      
+      setIcon(file)
+    }
   },
 }
 
@@ -92,5 +122,26 @@ export default {
 
     &:nth-of-type(3)
       grid-template-columns: 1fr 1fr
+
+
+.photo-input
+  display: flex
+  align-items: center
+  
+  cursor: pointer
+
+  &__label
+    display: flex
+    align-items: center
+    cursor: pointer
+
+  &__title
+    max-width: 170px  
+    word-wrap: break-word
+    font-weight: 600
+    margin-left: 18px
+
+  &__input
+    display: none
 
 </style>

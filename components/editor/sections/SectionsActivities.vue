@@ -6,7 +6,7 @@
         v-for="(item, i) in activitiesMulti" :key="i"
         
         :title="item.title"
-        :description="formatedDate(item.date)"
+        :description="formatedDate(item.dateFrom, item.dateTo)"
         
         @titleChange="item.title = $event"
         @delete="removeItem(['activities', item.id])"
@@ -19,8 +19,8 @@
 
           <div class="form__row">
             <div class="form__period">
-              <ui-date-picker label="Start date" v-model="item.date.from" />
-              <ui-date-picker label="End date" v-model="item.date.to" />
+              <ui-date-picker label="Start date" v-model="item.dateFrom" />
+              <ui-date-picker label="End date" v-model="item.dateTo" />
             </div>
 
             <ui-input label="City" v-model="item.city" />

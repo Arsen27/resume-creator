@@ -64,6 +64,7 @@ export default {
 
     title: "Your resume title",
     wantedJob: "",
+    icon: {},
     firstName: "",
     lastName: "",
     email: "",
@@ -83,6 +84,7 @@ export default {
   }),
 
   getters: {
+    state: state => state,
     wantedJob: state => state.wantedJob,
     firstName: state => state.firstName,
     lastName: state => state.lastName,
@@ -150,10 +152,10 @@ export default {
       });
     },
 
-    changeSectionTitle(state, [sectionId, value]) {
-      let section = state.sections.find(item => item.id === sectionId);
-      section.title = value;
+    setIcon(state, value) {
+      state.icon = value
     },
+
 
     updateField
   },
@@ -171,69 +173,59 @@ export default {
 
 const itemTemplates = {
   workExperiences: {
-    title: '',
-    employer: '',
-    date: {
-      from: new Date(),
-      to: new Date()
-    },
-    city: '',
-    description: ''
+    title: "",
+    employer: "",
+    dateFrom: new Date(),
+    dateTo: new Date(),
+    city: "",
+    description: ""
   },
   education: {
-    title: '',
-    school: '',
-    date: {
-      from: new Date(),
-      to: new Date()
-    },
-    city: '',
-    description: ''
+    title: "",
+    school: "",
+    dateFrom: new Date(),
+    dateTo: new Date(),
+    city: "",
+    description: ""
   },
   links: {
-    label: '',
-    link: '',
+    label: "",
+    link: ""
   },
   skills: {
-    name: '',
-    level: 'Expert',
+    name: "",
+    level: "Expert"
   },
   activities: {
-    title: '',
-    employer: '',
-    date: {
-      from: new Date(),
-      to: new Date(),
-    },
-    city: '',
-    description: '',
+    title: "",
+    employer: "",
+    dateFrom: new Date(),
+    dateTo: new Date(),
+    city: "",
+    description: ""
   },
   references: {
-    name: '',
-    company: '',
-    phone: '',
-    email: '',
+    name: "",
+    company: "",
+    phone: "",
+    email: ""
   },
   courses: {
-    name: '',
-    institution: '',
-    date: {
-      from: new Date(),
-      to: new Date(),
-    },
+    name: "",
+    institution: "",
+    dateFrom: new Date(),
+    dateTo: new Date()
   },
   internships: {
-    title: '',
-    employer: '',
-    date: {
-      from: new Date(),
-      to: new Date()
-    },
-    city: '',
-    description: ''
+    title: "",
+    employer: "",
+    dateFrom: new Date(),
+    dateTo: new Date(),
+    city: "",
+    description: ""
   },
   languages: {
-    name: '',
-    level: '',
-  },
-}
+    name: "",
+    level: ""
+  }
+};

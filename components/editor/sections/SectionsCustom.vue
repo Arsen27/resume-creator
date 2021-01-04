@@ -6,7 +6,7 @@
         v-for="(item, i) in cards" :key="i"
         
         :title="item.title"
-        :description="formatedDate(item.date)"
+        :description="formatedDate(item.dateFrom, item.dateTo)"
         
         @titleChange="item.title = $event"
         @delete="removeItem(item.id)"
@@ -19,8 +19,8 @@
 
           <div class="form__row">
             <div class="form__period">
-              <ui-date-picker label="Start date" v-model="item.date.from" />
-              <ui-date-picker label="End date" v-model="item.date.to" />
+              <ui-date-picker label="Start date" v-model="item.dateFrom" />
+              <ui-date-picker label="End date" v-model="item.dateTo" />
             </div>
           </div>
 
@@ -73,10 +73,8 @@ export default {
         id: cards.length,
         title: '',
         city: '',
-        date: {
-          from: new Date(),
-          to: new Date(),
-        },
+        dateFrom: new Date(),
+        dateTo: new Date(),
         description: '',
       })
     },

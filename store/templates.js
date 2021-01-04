@@ -1,5 +1,5 @@
 import { getField, updateField } from 'vuex-map-fields'
-import { adminApi } from '@/api'
+import { templatesApi } from '@/api'
 
 export default {
   state: {
@@ -42,7 +42,7 @@ export default {
     loadTemplates({ commit }) {
       commit('setLoading', true)
 
-      adminApi
+      templatesApi
         .getTemplatesList()
         .then(res => {
           const templates = res.data.data
@@ -55,10 +55,10 @@ export default {
         });
     },
 
-    loadTemplate({ commit }, id) {
+    async loadTemplate({ commit }, id) {
       commit("setTemplate", {});
 
-      adminApi
+      await templatesApi
         .getFullTemplate(id)
         .then(res => {
           const template = res.data

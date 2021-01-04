@@ -2,7 +2,7 @@
   <div class="template"> 
     <div class="template__header">
       <div class="template__header-left">
-        <nuxt-link to="/admin">
+        <nuxt-link to="/templates">
           <icons-arrow />
         </nuxt-link>
 
@@ -75,7 +75,7 @@
 
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import { mapFields } from 'vuex-map-fields'
-import { adminApi } from '@/api'
+import { templatesApi } from '@/api'
 
 import IconsArrow from '@/components/icons/IconsArrow'
 import UIToggle from '@/components/ui/UIToggle'
@@ -111,7 +111,7 @@ export default {
         style,
       })
 
-      adminApi.createTemplate(formData)
+      templatesApi.createTemplate(formData)
         .then(res => {
           console.log(res)
         

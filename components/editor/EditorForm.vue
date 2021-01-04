@@ -15,13 +15,13 @@
 
     <draggable v-model="sections">
       <editor-section
-        v-for="(section, i) in sections" :key="i"
+        v-for="(section, i) in sectionsMulti" :key="i"
 
         :number="i + 1"
         :title="section.title"
         :description="section.description"
 
-        @changeTitle="changeSectionTitle([section.id, $event])"
+        @changeTitle="section.title = $event"
         @delete="removeSection(section.id)"
       >
         <component
@@ -75,7 +75,7 @@ import draggable from 'vuedraggable'
 import { saveAs } from 'file-saver';
 
 import { mapMutations, mapActions } from 'vuex'
-import { mapFields } from 'vuex-map-fields'
+import { mapFields, mapMultiRowFields } from 'vuex-map-fields'
 import formData from '@/mixins/forms/formData.mixin'
 
 import { api } from '@/api'
@@ -105,11 +105,9 @@ export default {
   },
   computed: {
     ...mapFields('resume', ['title', 'sections']),
+    ...mapMultiRowFields('resume', { sectionsMulti: 'sections' }),
   },
   data: () => ({
-    dataSnapshot: {
-      title: 'Your Resume Title',
-    },
     additionalSections: [
       { 
         icon: 'sliders-h', 
@@ -173,7 +171,6 @@ export default {
     ...mapMutations('resume', [
       'addSection',
       'removeSection',
-      'changeSectionTitle',
     ]),
   },
 }

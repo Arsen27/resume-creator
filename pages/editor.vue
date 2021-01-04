@@ -20,8 +20,10 @@
     </div>
 
     <div class="editor__right">
-      <div class="editor__preview">
-
+      <div class="editor__preview" ref="previewContainer">
+        <iframe ref="iframe">
+          Your browser doesn't support resume preview
+        </iframe>
       </div>
       
       <div class="editor__download">
@@ -45,6 +47,8 @@
 
 <script>
 
+import ejs from 'ejs'
+
 import EditorTemplateSelect from '@/components/editor/EditorTemplateSelect'
 import IconsArrow from '@/components/icons/IconsArrow'
 import UIButton from '@/components/ui/UIButton'
@@ -53,6 +57,7 @@ import UIModal from '@/components/ui/UIModal'
 import { mapGetters, mapActions } from 'vuex'
 import { api } from '@/api'
 import formData from '@/mixins/forms/formData.mixin'
+
 
 export default {
   name: 'editor',
@@ -65,15 +70,17 @@ export default {
     templateId: null,
   }),
   computed: {
-    ...mapGetters('admin', {
+    ...mapGetters('templates', {
+      'template': 'template',
       'templates': 'templates',
       'templatesLoading': 'loading',
     }),
+    ...mapGetters('resume', ['state']),
   }, 
   methods: {
-    ...mapActions('admin', ['loadTemplates']),
+    ...mapActions('templates', ['loadTemplates', 'loadTemplate']),
 
-    download() {
+    getTemplateData() {
       const fields = this.$store.state.resume
       let customArray = []
       for (const key in fields.custom) {
@@ -83,12 +90,19 @@ export default {
         })
       }
 
-      const formData = this.jsonToFormData({ 
+      console.log(customArray)
+
+      return {
         ...fields,
         custom: customArray,
-      })
+      }
+    },
+    download() {
+      const { getTemplateData, templateId } = this
 
-      api.post(`api/pdf/download/${this.templateId}`, formData, {
+      const formData = this.jsonToFormData(getTemplateData())
+
+      api.post(`api/pdf/download/${templateId}`, formData, {
         responseType: 'blob'
       })
       .then(res => {
@@ -98,6 +112,18 @@ export default {
       })
       .catch(err => console.log(err.response))
     },
+    previewUpdate() {
+      const { template, getTemplateData } = this
+     
+      if (template.body) {
+        const body = template.body
+        let style = template.style
+        style += '* { box-sizing: border-box; }'
+        const htmlTemplate = `<html><head><style>${style}</style></head><body>${body}</body></html>`
+        const html = ejs.render(htmlTemplate, getTemplateData())
+        this.preview.innerHTML = html
+      } 
+    }
   },
   watch: {
     templatesLoading(value) {
@@ -105,10 +131,25 @@ export default {
         this.templateId = this.templates[0]._id
       }
     },
+    async templateId(value) {
+      await this.loadTemplate(value)
+      this.previewUpdate()
+    },
+    state: {
+      handler(value) {
+        this.previewUpdate()
+      },
+      deep: true,
+    },
   },
   created() {
     this.loadTemplates()
   },
+  mounted() {
+    const { iframe} = this.$refs
+
+    this.preview = iframe.contentWindow.document.body
+  }
 }
 
 </script>
@@ -151,5 +192,23 @@ export default {
     padding: 0 10px
     display: flex
     justify-content: space-between
+
+  &__preview
+    position: relative
+    padding-bottom: 30px
+    height: 100%
+    box-sizing: border-box
+
+  iframe
+    position: relative
+    left: 50%
+    transform: translateX(-50%)
+
+    width: 550px
+    height: 100%
+
+    background: #FFF  
+    border: 1px solid var(--color-border-light)
+    border-radius: 7px
 
 </style>

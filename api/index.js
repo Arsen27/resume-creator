@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import authApi from './auth.api'
-import adminApi from "./admin.api"
+import templatesApi from "./templates.api"
 
 const API_URL = 'https://protected-everglades-85568.herokuapp.com/'
 const APP_TOKEN = '5fdfccf998da9e22cd524af5'
@@ -33,5 +33,5 @@ export {
   api,
 
   authApi,
-  adminApi,
+  templatesApi,
 }

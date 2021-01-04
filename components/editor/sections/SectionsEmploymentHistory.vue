@@ -6,8 +6,8 @@
         v-for="(place, i) in workExperiencesMulti" :key="i"
         
         :title="place.title"
-        :description="formatedDate(place.date)"
-        
+        :description="formatedDate(place.dateFrom, place.dateTo)"
+
         @titleChange="place.title = $event"
         @delete="removeItem(['workExperiences', place.id])"
       >
@@ -19,8 +19,8 @@
 
           <div class="form__row">
             <div class="form__period">
-              <ui-date-picker label="Start date" v-model="place.date.from" />
-              <ui-date-picker label="End date" v-model="place.date.to" />
+              <ui-date-picker label="Start date" v-model="place.dateFrom" />
+              <ui-date-picker label="End date" v-model="place.dateTo" />
             </div>
 
             <ui-input label="City" v-model="place.city" />
